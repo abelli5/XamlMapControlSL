@@ -104,16 +104,19 @@ namespace MapControl
 
         private void OnViewportChanged(object sender, EventArgs e)
         {
-            var viewportPosition = parentMap.LocationToViewportPoint(Location);
-            var longitudeOffset = 0d;
-
-            if (viewportPosition.X < 0d || viewportPosition.X > parentMap.RenderSize.Width ||
-                viewportPosition.Y < 0d || viewportPosition.Y > parentMap.RenderSize.Height)
+            if (parentMap != null)
             {
-                longitudeOffset = Location.NearestLongitude(Location.Longitude, parentMap.Center.Longitude) - Location.Longitude;
-            }
+                var viewportPosition = parentMap.LocationToViewportPoint(Location);
+                var longitudeOffset = 0d;
 
-            ((TranslateTransform)viewportTransform.Children[0]).X = longitudeOffset;
+                if (viewportPosition.X < 0d || viewportPosition.X > parentMap.RenderSize.Width ||
+                    viewportPosition.Y < 0d || viewportPosition.Y > parentMap.RenderSize.Height)
+                {
+                    longitudeOffset = Location.NearestLongitude(Location.Longitude, parentMap.Center.Longitude) - Location.Longitude;
+                }
+
+                ((TranslateTransform)viewportTransform.Children[0]).X = longitudeOffset;
+            }
         }
     }
 }
